@@ -7,22 +7,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Shiwayari Yonohana
- * Representation of a set of Integer Intervals.
- * Intervals are united/split automatically upon
- * specific method calls.
+ * @author Shiwayari Yonohana Representation of a set of Integer Intervals.
+ *         Intervals are united/split automatically upon specific method calls.
  */
 public class RangeList implements Iterable<Interval> {
-	
+
 	private TreeSet<Interval> ranges;
-	
+
 	/**
 	 * Creates an empty RangeList.
 	 */
 	public RangeList() {
 		ranges = new TreeSet<Interval>();
 	}
-	
+
 	/**
 	 * Creates a RangeList containing the interval i.
 	 */
@@ -30,47 +28,47 @@ public class RangeList implements Iterable<Interval> {
 		ranges = new TreeSet<Interval>();
 		ranges.add(i);
 	}
-	
+
 	/**
-	 * Parses a RangeList from a string in a format like "[[a,b],[c,d]]"
-	 * where the inner [] are the intervals. The algorithm also works
-	 * if any intervals overlap. If the String equals "[]", an empty RangeList
-	 * is created.
+	 * Parses a RangeList from a string in a format like "[[a,b],[c,d]]" where the
+	 * inner [] are the intervals. The algorithm also works if any intervals
+	 * overlap. If the String equals "[]", an empty RangeList is created.
+	 * 
 	 * @param s
-	 * @throws IllegalArgumentException if the format does not match,
-	 * or any interval is invalid, e.g. a > b
+	 * @throws IllegalArgumentException if the format does not match, or any
+	 *                                  interval is invalid, e.g. a > b
 	 */
 	public RangeList(String s) {
 		Pattern all = Pattern.compile("\\[(\\[\\d+,\\d+\\](,\\[\\d+,\\d+\\])*){0,1}\\]");
-		if(all.matcher(s).matches()) {
+		if (all.matcher(s).matches()) {
 			Pattern p = Pattern.compile("\\[\\d+,\\d+\\]");
 			Matcher m = p.matcher(s);
 			ranges = new TreeSet<Interval>();
-			while(m.find()) {
+			while (m.find()) {
 				addInterval(new Interval(m.group()));
 			}
 		} else {
 			throw new IllegalArgumentException(s + "is not a string representation of RangeList.");
 		}
 	}
-	
+
 	/**
 	 * Adds a copy of interval to the RangeList, i.e. changes to the interval are
 	 * not reflected in the RangeList.
 	 */
 	public void addInterval(Interval interval) {
 		Interval combinedInterval = new Interval(interval.getLeft(), interval.getRight());
-		for(Interval i : new TreeSet<Interval>(ranges)) {
-			if(combinedInterval.unite(i)) {
+		for (Interval i : new TreeSet<Interval>(ranges)) {
+			if (combinedInterval.unite(i)) {
 				ranges.remove(i);
 			}
 		}
-		ranges.add(combinedInterval);	
+		ranges.add(combinedInterval);
 	}
-	
+
 	/**
-	 * Removes all values contained in interval from this RangeList.
-	 * Changes to the Interval are not reflected in the RangeList. 
+	 * Removes all values contained in interval from this RangeList. Changes to the
+	 * Interval are not reflected in the RangeList.
 	 */
 	public void subtractInterval(Interval interval) {
 		int added = 0;
@@ -82,8 +80,8 @@ public class RangeList implements Iterable<Interval> {
 					added++;
 				}
 				if (added == 2) {
-					//One interval can intersect at most 2 intervals
-					//that are not contained in the interval.
+					// One interval can intersect at most 2 intervals
+					// that are not contained in the interval.
 					break;
 				}
 			}
@@ -91,8 +89,8 @@ public class RangeList implements Iterable<Interval> {
 	}
 
 	/**
-	 * @return The union of the specified RangeList and r.
-	 * Changes on the union do not effect the used RangeLists.
+	 * @return The union of the specified RangeList and r. Changes on the union do
+	 *         not effect the used RangeLists.
 	 */
 	public RangeList union(RangeList r) {
 		RangeList union = new RangeList();
@@ -103,25 +101,25 @@ public class RangeList implements Iterable<Interval> {
 			union.addInterval(i);
 		}
 		return union;
-		
+
 	}
 
 	/**
-	 * @return Returns the RangeList resulting when all values
-	 * contained in r are removed from the specified RangeList.
-	 * Changes on the subtraction do not effect the used RangeLists.
+	 * @return Returns the RangeList resulting when all values contained in r are
+	 *         removed from the specified RangeList. Changes on the subtraction do
+	 *         not effect the used RangeLists.
 	 */
 	public RangeList subtraction(RangeList r) {
 		RangeList subt = copy();
 		for (Interval i : r.ranges) {
 			subt.subtractInterval(i);
-		}		
+		}
 		return subt;
 	}
-	
+
 	/**
-	 * @return The intersection of the specified RangeList and r.
-	 * Changes on the intersection do not effect the used RangeLists.
+	 * @return The intersection of the specified RangeList and r. Changes on the
+	 *         intersection do not effect the used RangeLists.
 	 */
 	public RangeList intersection(RangeList r) {
 		RangeList intersect = new RangeList();
@@ -136,9 +134,9 @@ public class RangeList implements Iterable<Interval> {
 	}
 
 	/**
-	 * @return A deep copy of the specified RangeList so that neither
-	 * changes to the Intervals of the RangeList nor changes to the
-	 * RangeList itself are reflected in the copy.
+	 * @return A deep copy of the specified RangeList so that neither changes to the
+	 *         Intervals of the RangeList nor changes to the RangeList itself are
+	 *         reflected in the copy.
 	 */
 	public RangeList copy() {
 		RangeList copy = new RangeList();
@@ -147,22 +145,23 @@ public class RangeList implements Iterable<Interval> {
 		}
 		return copy;
 	}
-	
+
 	/**
-	 * @return The total number of different integers contained
-	 * in all intervals of the specified RangeList.
+	 * @return The total number of different integers contained in all intervals of
+	 *         the specified RangeList.
 	 */
 	public int size() {
 		int size = 0;
 		for (Interval i : ranges) {
 			size += i.size();
 		}
-		return size;		
+		return size;
 	}
 
 	/**
-	 * @return a string representation of this RangeList in the format "[[a,b],[c,d]]"
-	 * where the inner [-,-] are the intervals and a,b,c,d,.. the interval limits
+	 * @return a string representation of this RangeList in the format
+	 *         "[[a,b],[c,d]]" where the inner [-,-] are the intervals and
+	 *         a,b,c,d,.. the interval limits
 	 */
 	public String toString() {
 		String s = "[";
@@ -172,9 +171,9 @@ public class RangeList implements Iterable<Interval> {
 		if (s.endsWith(",")) {
 			s = s.substring(0, s.length() - 1);
 		}
-		return s + "]"; 
+		return s + "]";
 	}
-	
+
 	/**
 	 * @return true if this RangeList contains the RangeList r, false otherwise.
 	 */
@@ -190,8 +189,8 @@ public class RangeList implements Iterable<Interval> {
 		boolean equal = true;
 		if (obj.getClass() == getClass()) {
 			Iterator<Interval> it1 = ranges.iterator();
-			Iterator<Interval> it2 = ((RangeList) obj).ranges.iterator(); 
-			for(; it1.hasNext() && it2.hasNext();) {
+			Iterator<Interval> it2 = ((RangeList) obj).ranges.iterator();
+			for (; it1.hasNext() && it2.hasNext();) {
 				if (!it1.next().equals(it2.next())) {
 					equal = false;
 					break;
@@ -216,81 +215,84 @@ public class RangeList implements Iterable<Interval> {
 	}
 
 	/**
-	 * @return the iterator for the RangeList for read-only purposes.
-	 * The RangeList cannot be modified by using this iterator.  
+	 * @return the iterator for the RangeList for read-only purposes. The RangeList
+	 *         cannot be modified by using this iterator.
 	 */
 	@Override
 	public Iterator<Interval> iterator() {
 		return Collections.unmodifiableSortedSet(ranges).iterator();
 	}
-	
+
 	/**
 	 * @return the smallest integer in this RangeList.
 	 * @throws EmptyRangeListException if RangeList is empty.
 	 */
 	public int getSmallest() throws EmptyRangeListException {
-		if(!isEmpty()) {
+		if (!isEmpty()) {
 			return ranges.first().getLeft();
-		} else { throw new EmptyRangeListException(); }		
+		} else {
+			throw new EmptyRangeListException();
+		}
 	}
-	
+
 	/**
 	 * @return the biggest integer in this RangeList.
 	 * @throws EmptyRangeListException if RangeList is empty.
 	 */
 	public int getBiggest() throws EmptyRangeListException {
-		if(!isEmpty()) {
+		if (!isEmpty()) {
 			return ranges.last().getRight();
-		} else { throw new EmptyRangeListException(); }
+		} else {
+			throw new EmptyRangeListException();
+		}
 	}
-	
+
 	/**
 	 * @return true if the RangeList is empty, false otherwise.
 	 */
 	public boolean isEmpty() {
 		return (ranges.isEmpty());
 	}
+
+	/* Test Code:
+	public static void main(String[] args) {
 	
-
-/* Test Code:
-public static void main(String[] args) {
-
-	Random r = new Random();
-	RangeList l = new RangeList();
-	for (int i = 0; i < 20; i++) {
-		while (true) {
-			try {
-				int n = r.nextInt(100);
-				Interval j = new Interval(n - r.nextInt(10), n);
-				Thread.sleep(10);
-				l.addInterval(j);
-				break;
-			} catch (Exception e) {}
-			try{
-				Thread.sleep(10);
-			} catch (Exception e) {}
+		Random r = new Random();
+		RangeList l = new RangeList();
+		for (int i = 0; i < 20; i++) {
+			while (true) {
+				try {
+					int n = r.nextInt(100);
+					Interval j = new Interval(n - r.nextInt(10), n);
+					Thread.sleep(10);
+					l.addInterval(j);
+					break;
+				} catch (Exception e) {}
+				try{
+					Thread.sleep(10);
+				} catch (Exception e) {}
+			}
 		}
-	}
-
-	RangeList m = new RangeList();
-	for (int i = 0; i < 20; i++) {
-		while (true) {
-			try {
-				int n = r.nextInt(100);
-				Interval j = new Interval(n - r.nextInt(10), n);
-				Thread.sleep(10);
-				m.addInterval(j);
-				break;
-			} catch (Exception e) {}
-			try{
-				Thread.sleep(10);
-			} catch (Exception e) {}
+	
+		RangeList m = new RangeList();
+		for (int i = 0; i < 20; i++) {
+			while (true) {
+				try {
+					int n = r.nextInt(100);
+					Interval j = new Interval(n - r.nextInt(10), n);
+					Thread.sleep(10);
+					m.addInterval(j);
+					break;
+				} catch (Exception e) {}
+				try{
+					Thread.sleep(10);
+				} catch (Exception e) {}
+			}
 		}
-	}
-	System.out.println(l);
-	System.out.println(m);
-	System.out.println(l.intersection(m));
-
-}*/
+		System.out.println(l);
+		System.out.println(m);
+		System.out.println(l.intersection(m));
+	
+	}*/
 
 }
