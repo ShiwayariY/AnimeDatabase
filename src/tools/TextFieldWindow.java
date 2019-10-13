@@ -26,7 +26,7 @@ public class TextFieldWindow {
 	public TextFieldWindow(final OpensTextFieldWindow openingObject, String windowTitle, String attributeToInput, final int refID, String textFieldText){
 		final JFrame f = new JFrame(windowTitle);
 		try {
-			f.setIconImage(ImageIO.read(getClass().getResource("res/adb.jpg")));
+			f.setIconImage(ImageIO.read(getClass().getResource("/res/adb.jpg")));
 		} catch (IOException e) {}	
 		final JTextField tAttr = new JTextField(10);
 		final JLabel lAttr = new JLabel(attributeToInput+":");

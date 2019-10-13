@@ -1,4 +1,5 @@
 package obj;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -76,7 +77,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener, O
 		super(title);
 //		UIManager.getDefaults().put("ComboBox.selectionBackground", new ColorUIResource(BGCOLOR));
 		try {
-			windowIcon = ImageIO.read(getClass().getResource("res/adb.jpg"));
+			windowIcon = ImageIO.read(getClass().getResource("/res/adb.jpg"));
 			this.setIconImage(windowIcon);
 		} catch (IOException e) {}		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
