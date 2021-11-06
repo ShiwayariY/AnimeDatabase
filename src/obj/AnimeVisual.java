@@ -817,7 +817,7 @@ public class AnimeVisual implements ActionListener, KeyListener, MouseListener, 
 		cancel.setBounds(160, 40, 80, 25);
 
 		f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		f.setSize(300, 95);
+		f.setSize(306, 107);
 		f.setLocationRelativeTo(null);
 		f.setLayout(null);
 		f.add(group);

@@ -47,7 +47,7 @@ public class TextFieldWindow {
 		tAttr.setText(textFieldText);
 
 		f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		f.setSize(217, 90);
+		f.setSize(226, 103);
 		f.setLocationRelativeTo(null);
 		f.setLayout(null);
 		f.add(lAttr);
