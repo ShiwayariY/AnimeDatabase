@@ -223,10 +223,10 @@ public class AnimeData {
 
 			bw.write(
 					"<SubberID>\n" +
-							id + "\n" +
+				       			id + "\n" +
 							"<Display>\n" +
 							groupList.get(id).getDisplayName() + "\n" +
-							"<Names>\n" +
+						       	"<Names>\n" +
 							nameStr +
 							"<Comments>\n" +
 							noPrecedingEmptyStringCommentStr +
@@ -286,8 +286,8 @@ public class AnimeData {
 				"(.+?)\n" +
 				"<Watched>\n" +
 				"(.+?)\n" +
-				"<Airstatus>\n" +
-				"([012])\n" +
+				"<Airstatus>\n"	+
+			        "([012])\n" +
 				"<WatchedSpans>\n" +
 				"(.*?\n)" + // "<Times>\n\\d{0,1}\n" +
 				"<HDD>\n" +
@@ -792,12 +792,12 @@ public class AnimeData {
 			sequels.add(null);
 			episodes.add(new Integer(0));
 			comments.add(new HashMap<Interval, String>());
-			released.add(new RangeList());
+			released.add(new RangeList(new Interval(1, 1)));
 			downloaded.add(new RangeList());
 			watched.add(new RangeList());
-			airStatus.add(AirStatus.SOON);
+			airStatus.add(AirStatus.AIRING);
 			periods.add(new Vector<Period>());
-			hdds.add(null);
+			hdds.add("0");
 			groups.add(new TreeMap<Integer, RangeList>());
 		}
 		return !exists;
