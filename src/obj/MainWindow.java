@@ -886,7 +886,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener, O
 				JPanel visual = AnimeData.visual(s);
 				row.add(visual);
 				mostRecentComponentIndex++;
-				if (focusedComponentIndex == -1 && s.equals(firstFound))
+				if (focusedComponentIndex == -1 && s.equals(firstFound) || s.equals(searchFilter))
 					focusedComponentIndex = mostRecentComponentIndex;
 				animes.remove(s);
 			}
